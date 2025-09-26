@@ -4,7 +4,7 @@ import os
 
 csv_name = 'daraz.csv'
 if os.path.exists(csv_name):
-    os.remove(csv_name) #
+    os.remove(csv_name) # Resetting the csv so that only top 10 is saved in csv
 
 def add_to_csv(index, name, price):
     d_csv = {
@@ -30,18 +30,11 @@ with sync_playwright() as p:
     browser = p.chromium.launch(headless = True,slow_mo=2000) #slow_mo has delay in ms so 2000ms mean 2s
     context = browser.new_context(record_video_dir="videos/")
     page = context.new_page()
-    #bcz amazon has alot of pictures so its better not to load it all
+    #bcz Daraz has alot of pictures so its better not to load it all
     #so we will only load the dom content
     #dom content is the html structure of the page
     link = 'https://www.daraz.pk/#?'
-    page.goto(link,wait_until='domcontentloaded')
-    #capturing video of the session
-    #page = context.new_page(record_video_dir="videos/")
-    #video will be saved in videos folder
-    
-
-
-   
+    page.goto(link,wait_until='domcontentloaded')   
     try:
         #using id bcz id doesnt change often
         page.locator("input#q").click()
@@ -51,7 +44,7 @@ with sync_playwright() as p:
     except:
         print("Search box not found")  
 
-
+    #using Classes to locate the title and prices
     titles = page.locator("div.RfADt")
     prices = page.locator("div.aBrP0")
 
